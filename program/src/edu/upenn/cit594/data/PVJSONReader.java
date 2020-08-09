@@ -1,6 +1,7 @@
 package edu.upenn.cit594.data;
 
 import edu.upenn.cit594.datamanagement.PV;
+import edu.upenn.cit594.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,7 +18,9 @@ import static java.lang.Integer.parseInt;
 
 public class PVJSONReader <E> implements Reader{
     @Override
-    public ArrayList readFromFile(File PVInputFileName) {
+    public ArrayList readFromFile(String PVInputFileName) {
+        Logger logger = Logger.getInstance();
+
         ArrayList<PV> parkingViolations = new ArrayList<PV>();
 
         // create a parser
@@ -32,10 +35,12 @@ public class PVJSONReader <E> implements Reader{
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        //logging
+        logger.logFileOpen(PVInputFileName);
+
         // use an iterator to iterate over each element of the array
         Iterator iter = PVJSON.iterator();
-
-        Map<String, Integer> summary = new HashMap<>();
 
         // iterate while there are more objects in array
         while (iter.hasNext()) {

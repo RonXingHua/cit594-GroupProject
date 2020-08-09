@@ -1,6 +1,7 @@
 package edu.upenn.cit594;
 
 
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.FileValidator;
 
 public class Main {
@@ -17,6 +18,10 @@ public class Main {
         String propertyInputFileName = args[2];
         String populationInputFileName = args[3];
         String logFileName = args[4];
+
+        // logging
+        Logger logger = Logger.getInstance(logFileName);
+        logger.logProgramStart(PVInputFileFormat,PVInputFileName,propertyInputFileName,populationInputFileName,logFileName);
 
         // Validate input files
         FileValidator.formatValidate(PVInputFileFormat);

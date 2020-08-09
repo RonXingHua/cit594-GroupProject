@@ -1,6 +1,7 @@
 package edu.upenn.cit594.data;
 
 import edu.upenn.cit594.datamanagement.Population;
+import edu.upenn.cit594.logging.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,15 +12,20 @@ import static java.lang.Integer.parseInt;
 
 public class PopulationReader <E> implements Reader {
     @Override
-    public ArrayList<Population> readFromFile(File populationInputFileName) {
+    public ArrayList<Population> readFromFile(String populationInputFileName) {
+        Logger logger = Logger.getInstance();
         ArrayList<Population> populations = new ArrayList<Population>();
+        File populationInputFile = new File(populationInputFileName);
 
         Scanner myScanner = null;
         try{
-            myScanner = new Scanner(populationInputFileName);
+            myScanner = new Scanner(populationInputFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        //logging
+        logger.logFileOpen(populationInputFileName);
 
         if(myScanner != null) {
             while (myScanner.hasNextLine()) {

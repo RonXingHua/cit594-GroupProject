@@ -1,25 +1,33 @@
 package edu.upenn.cit594.logging;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.File;
+import java.io.PrintWriter;
 
 public class Logger {
     // Using Singleton
-    private static Logger instance = new Logger();
+    private PrintWriter out;
+
+    private Logger(String filename){
+        try{
+            out = new PrintWriter(new File(filename));
+        }catch(Exception e){}
+    }
+    private static Logger instance = null;
 
     public static Logger getInstance(){
         return instance;
     }
 
-    public void logString (String logFileName, String loggingContent){
-        try{
-            FileWriter file = new FileWriter (logFileName, true);
-
-            file.append(loggingContent + "\n");
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static Logger getInstance(String logFileName){
+        if (instance == null){
+            instance = new Logger(logFileName);
         }
+        return instance;
+    }
+
+    public void logString ( String loggingContent){
+        out.println(loggingContent);
+        out.flush();
     }
 
     public void logProgramStart(
@@ -28,59 +36,34 @@ public class Logger {
             String propertyInputFileName,
             String populationInputFileName,
             String logFileName){
-        try{
-            FileWriter file = new FileWriter (logFileName, true);
 
-            // logging content is current time and runtime arguments
-            String currentTime = String.valueOf(System.currentTimeMillis());
-            file.append(currentTime + "\\s" + PVInputFileFormat + PVInputFileName
-                    + propertyInputFileName + populationInputFileName + logFileName + "\n");
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        out.println(currentTime + "\\s" + PVInputFileFormat + PVInputFileName
+                + propertyInputFileName + populationInputFileName + logFileName + "\n");
+        out.flush();
+    }
+
+    public void logFileOpen( String openedFileName){
+
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        out.println(currentTime + "\\s" + openedFileName + "\n");
+        out.flush();
 
     }
 
-    public void logFileOpen( String logFileName,  String openedFileName){
-        try{
-            FileWriter file = new FileWriter (logFileName, true);
+    public void logUserChoice( int userChoice){
 
-            // logging content is state and original tweet
-            String currentTime = String.valueOf(System.currentTimeMillis());
-            file.append(currentTime + "\\s" + openedFileName + "\n");
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        out.println(currentTime + "\\s" + "User Choice:" + userChoice + "\n");
+        out.flush();
 
     }
 
-    public void logUserChoice( String logFileName, int userChoice){
-        try{
-            FileWriter file = new FileWriter (logFileName, true);
+    public void logUserZip( int zip){
 
-            // logging content is state and original tweet
-            String currentTime = String.valueOf(System.currentTimeMillis());
-            file.append(currentTime + "\\s" + "User Choice:" + userChoice + "\n");
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void logUserZip( String logFileName, int zip){
-        try{
-            FileWriter file = new FileWriter (logFileName, true);
-
-            // logging content is state and original tweet
-            String currentTime = String.valueOf(System.currentTimeMillis());
-            file.append(currentTime + "\\s" + "Zip:" + zip + "\n");
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        out.println(currentTime + "\\s" + "Zip:" + zip + "\n");
+        out.flush();
 
     }
 }

@@ -2,6 +2,7 @@ package edu.upenn.cit594.data;
 
 
 import edu.upenn.cit594.datamanagement.Property;
+import edu.upenn.cit594.logging.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,15 +12,20 @@ import static java.lang.Integer.parseInt;
 
 public class PropertyReader <E> implements Reader {
     @Override
-    public ArrayList<Property> readFromFile(File propertyInputFileName) {
+    public ArrayList<Property> readFromFile(String propertyInputFileName) {
+        Logger logger = Logger.getInstance();
         ArrayList<Property> properties = new ArrayList<Property>();
+        File propertyInputFile = new File(propertyInputFileName);
 
         Scanner myScanner = null;
         try{
-            myScanner = new Scanner(propertyInputFileName);
+            myScanner = new Scanner(propertyInputFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        //logging
+        logger.logFileOpen(propertyInputFileName);
 
         if(myScanner != null) {
             // Determine fields in the first row

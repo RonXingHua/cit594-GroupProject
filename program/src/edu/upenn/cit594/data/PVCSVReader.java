@@ -1,6 +1,7 @@
 package edu.upenn.cit594.data;
 
 import edu.upenn.cit594.datamanagement.PV;
+import edu.upenn.cit594.logging.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,15 +14,21 @@ import static java.lang.Integer.parseInt;
 
 public class PVCSVReader <E> implements Reader {
     @Override
-    public ArrayList<PV> readFromFile(File PVInputFileName) {
+    public ArrayList<PV> readFromFile(String PVInputFileName) {
+        Logger logger = Logger.getInstance();
         ArrayList<PV> parkingViolations = new ArrayList<PV>();
+        File PVInputFile = new File(PVInputFileName);
 
         Scanner myScanner = null;
-        try{
-            myScanner = new Scanner(PVInputFileName);
+
+        try {
+            myScanner = new Scanner(PVInputFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        //logging
+        logger.logFileOpen(PVInputFileName);
 
         if(myScanner != null) {
             while (myScanner.hasNextLine()) {
