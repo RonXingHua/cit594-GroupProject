@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -45,9 +44,6 @@ public class PVCSVReader <E> implements Reader {
                 int PVUniqueID = parseInt(rawPV_split[5]);
                 int PVZip = parseInt(rawPV_split[6]);
 
-                // Blank Entry Check - TO DO
-
-
                 // PV object
                 PV myPV = new PV(PVDateTime,PVFine, PVDescription,PVAnonymousID,PVState,PVUniqueID,PVZip);
 
@@ -56,16 +52,7 @@ public class PVCSVReader <E> implements Reader {
             }
         }
 
-
-
-
-
-
-
-
-
-
-        return null;
+        return parkingViolations;
     }
 
 

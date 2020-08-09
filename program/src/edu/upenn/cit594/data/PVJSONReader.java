@@ -2,13 +2,18 @@ package edu.upenn.cit594.data;
 
 import edu.upenn.cit594.datamanagement.PV;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class PVJSONReader <E> implements Reader{
     @Override
@@ -19,16 +24,16 @@ public class PVJSONReader <E> implements Reader{
         JSONParser parser = new JSONParser();
         // open the file and get the array of JSON objects
 
-        JSONArray tweets = null;
+        JSONArray PVJSON = null;
         try {
-            tweets = (JSONArray)parser.parse(new FileReader(tweetFile));
+            PVJSON = (JSONArray)parser.parse(new FileReader(PVInputFileName));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
         // use an iterator to iterate over each element of the array
-        Iterator iter = tweets.iterator();
+        Iterator iter = PVJSON.iterator();
 
         Map<String, Integer> summary = new HashMap<>();
 
@@ -37,27 +42,26 @@ public class PVJSONReader <E> implements Reader{
             // get the next JSON object
             JSONObject jsonData = (JSONObject) iter.next();
 
-            String rawLocations = jsonData.get("location").toString();
-            String rawText = jsonData.get("text").toString();
+            // Parse all fields for PV
+            String rawDatetime = jsonData.get("date").toString();
+            DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("uuuu-MM-ddTHH:mm:ssZ");
+            LocalDateTime PVDateTime = LocalDateTime.parse(rawDatetime, formatter);
 
-            // Parse latitude and longitude in location
-            String rawLocations_split[] = rawLocations.split(",");
-            double tweetLatitude = Double.parseDouble(rawLocations_split[0].substring(1));
-            double tweetLongitude = Double.parseDouble(rawLocations_split[1].substring(0, rawLocations_split[1].length() - 1));
+            int PVFine = parseInt(jsonData.get("fine").toString());
+            String PVDescription = jsonData.get("text").toString();
+            int PVAnonymousID = parseInt(jsonData.get("plate_id").toString());
+            String PVState = jsonData.get("state").toString();
+            int PVUniqueID = parseInt(jsonData.get("ticket_number").toString());
+            int PVZip = parseInt(jsonData.get("zip_code").toString());
 
-            Geolocation geolocation = new Geolocation(tweetLatitude, tweetLongitude);
-            String state = statesDataService.getStateByGeoLocation(geolocation);
-            Tweet tweet = new Tweet(state, rawText);
 
-            // If it's a flu tweet, it will be added into the summary which will be presented in the end
-            boolean isLogged = processTweet(tweet);
+            // PV object
+            PV myPV = new PV(PVDateTime,PVFine, PVDescription,PVAnonymousID,PVState,PVUniqueID,PVZip);
 
-            if (isLogged){
-                summary.putIfAbsent(state, 0);
-                summary.put(state, summary.get(state) + 1);
-            }
+            // Add PV info into List
+            parkingViolations.add(myPV);
         }
 
-        return null;
+        return parkingViolations;
     }
 }
