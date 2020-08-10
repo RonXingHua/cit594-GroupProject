@@ -5,14 +5,14 @@ import java.util.Date;
 
 public class PV {
     private LocalDateTime timestamp;
-    private int fine;
+    private Integer fine;
     private String description;
-    private int anonymousID;
+    private String anonymousID;
     private String state;
-    private int uniqueID;
-    private int zip;
+    private String uniqueID;
+    private String zip;
 
-    public PV(LocalDateTime timestamp,int fine, String description, int anonymousID, String state, int uniqueID, int zip){
+    public PV(LocalDateTime timestamp,Integer fine, String description, String anonymousID, String state, String uniqueID, String zip){
         this.timestamp = timestamp;
         this.fine = fine;
         this.description = description;
@@ -26,7 +26,7 @@ public class PV {
         return timestamp;
     }
 
-    public int getFine() {
+    public Integer getFine() {
         return fine;
     }
 
@@ -34,7 +34,7 @@ public class PV {
         return description;
     }
 
-    public int getAnonymousID() {
+    public String getAnonymousID() {
         return anonymousID;
     }
 
@@ -42,11 +42,11 @@ public class PV {
         return state;
     }
 
-    public int getUniqueID() {
+    public String getUniqueID() {
         return uniqueID;
     }
 
-    public int getZip() {
+    public String getZip() {
         return zip;
     }
 }

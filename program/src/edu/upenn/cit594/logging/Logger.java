@@ -1,6 +1,7 @@
 package edu.upenn.cit594.logging;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 
 public class Logger {
@@ -17,7 +18,7 @@ public class Logger {
     public static Logger getInstance(){
         return instance;
     }
-
+    
     public static Logger getInstance(String logFileName){
         if (instance == null){
             instance = new Logger(logFileName);
@@ -37,16 +38,16 @@ public class Logger {
             String populationInputFileName,
             String logFileName){
 
+
         String currentTime = String.valueOf(System.currentTimeMillis());
-        out.println(currentTime + "\\s" + PVInputFileFormat + PVInputFileName
-                + propertyInputFileName + populationInputFileName + logFileName + "\n");
+        out.println(currentTime + " " + PVInputFileFormat + " " + PVInputFileName + " " + propertyInputFileName + " " + populationInputFileName + " " + logFileName);
         out.flush();
     }
 
     public void logFileOpen( String openedFileName){
 
         String currentTime = String.valueOf(System.currentTimeMillis());
-        out.println(currentTime + "\\s" + openedFileName + "\n");
+        out.println(currentTime + " " + openedFileName);
         out.flush();
 
     }
@@ -54,7 +55,8 @@ public class Logger {
     public void logUserOption( int userChoice){
 
         String currentTime = String.valueOf(System.currentTimeMillis());
-        out.println(currentTime + "\\s" + "User Choice:" + userChoice + "\n");
+
+        out.println(currentTime + " " + "User Choice:" + userChoice);
         out.flush();
 
     }
@@ -62,7 +64,7 @@ public class Logger {
     public void logUserZip( int zip){
 
         String currentTime = String.valueOf(System.currentTimeMillis());
-        out.println(currentTime + "\\s" + "Zip:" + zip + "\n");
+        out.println(currentTime + " " + "Zip:" + zip);
         out.flush();
 
     }

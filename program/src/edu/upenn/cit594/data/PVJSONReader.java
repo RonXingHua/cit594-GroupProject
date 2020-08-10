@@ -7,7 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -49,15 +49,20 @@ public class PVJSONReader <E> implements Reader{
 
             // Parse all fields for PV
             String rawDatetime = jsonData.get("date").toString();
-            DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("uuuu-MM-ddTHH:mm:ssZ");
+            DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss'Z'");
             LocalDateTime PVDateTime = LocalDateTime.parse(rawDatetime, formatter);
 
             int PVFine = parseInt(jsonData.get("fine").toString());
-            String PVDescription = jsonData.get("text").toString();
-            int PVAnonymousID = parseInt(jsonData.get("plate_id").toString());
+            String PVDescription = jsonData.get("violation").toString();
+            String PVAnonymousID = jsonData.get("plate_id").toString();
             String PVState = jsonData.get("state").toString();
-            int PVUniqueID = parseInt(jsonData.get("ticket_number").toString());
-            int PVZip = parseInt(jsonData.get("zip_code").toString());
+            String PVUniqueID = jsonData.get("ticket_number").toString();
+
+            // ignore the entry with empty zip code
+            if(jsonData.get("zip_code").toString().isEmpty()){
+                continue;
+            }
+            String PVZip = jsonData.get("zip_code").toString();
 
 
             // PV object

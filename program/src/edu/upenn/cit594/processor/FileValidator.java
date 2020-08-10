@@ -14,7 +14,7 @@ public class FileValidator {
     }
 
     // Check if the tweet file exist and able to read
-    public static void nameValidate(String inputFileName){
+    public static void inputFileValidate(String inputFileName){
         File file = new File(inputFileName);
         boolean fileTest = file.exists() && file.canRead();
         if(!fileTest){

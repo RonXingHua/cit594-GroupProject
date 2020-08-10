@@ -7,7 +7,7 @@ import java.util.Scanner;
 import static java.lang.Integer.parseInt;
 
 public class Display {
-    public static int getUserInput(){
+    public int getUserInput(){
         System.out.println("Kindly select an option (0 to 6) to proceed:");
         System.out.println("[0]: Exit");
         System.out.println("[1]: Total population for all ZIP Codes");

@@ -38,18 +38,24 @@ public class PVCSVReader <E> implements Reader {
                 }
 
                 // Parse one line in CSV file
-                String rawPV_split[] = rawPV.split(",");
+                String rawPV_split[] = rawPV.split(",",-1);
 
                 // Parse all fields for PV
-                DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("uuuu-MM-ddTHH:mm:ssZ");
+                DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss'Z'");
                 LocalDateTime PVDateTime = LocalDateTime.parse(rawPV_split[0], formatter);
 
                 int PVFine = parseInt(rawPV_split[1]);
                 String PVDescription = rawPV_split[2];
-                int PVAnonymousID = parseInt(rawPV_split[3]);
+                String PVAnonymousID = rawPV_split[3];
                 String PVState = rawPV_split[4];
-                int PVUniqueID = parseInt(rawPV_split[5]);
-                int PVZip = parseInt(rawPV_split[6]);
+                String PVUniqueID = rawPV_split[5];
+
+                // ignore the entry with empty zip code
+                if(rawPV_split[6].isEmpty()){
+                    continue;
+                }
+
+                String PVZip = rawPV_split[6];
 
                 // PV object
                 PV myPV = new PV(PVDateTime,PVFine, PVDescription,PVAnonymousID,PVState,PVUniqueID,PVZip);

@@ -6,8 +6,10 @@ import edu.upenn.cit594.logging.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
 public class PropertyReader <E> implements Reader {
@@ -55,10 +57,32 @@ public class PropertyReader <E> implements Reader {
                 String rawProperty_split[] = rawProperty.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 
                 // Parse all fields for Property
-                int propertyMarketValue = parseInt(rawProperty_split[indexMarketValue]);
-                int propertyTotLiableArea = parseInt(rawProperty_split[indexTotLiableArea]);
+
+                Double propertyMarketValue,propertyTotLiableArea;
+                // Whenever parse to Double encounter error, make it a null value
+                try{
+                    propertyMarketValue = parseDouble(rawProperty_split[indexMarketValue]);
+                }catch (Exception e) {
+                    propertyMarketValue = null;
+                }
+                try{
+                    propertyTotLiableArea = parseDouble(rawProperty_split[indexMarketValue]);
+                }catch (Exception e) {
+                    propertyTotLiableArea = null;
+                }
+
+                // ignore the entry with empty zip code
+                if(rawProperty_split[indexZip].isEmpty()){
+                    continue;
+                }
+
                 //only consider the first five digits of zip
-                int propertyZip = parseInt(rawProperty_split[indexZip].substring(0,4));
+                String propertyZip;
+                try{
+                    propertyZip = rawProperty_split[indexZip].substring(0,4);
+                }catch (Exception e) {
+                    continue;
+                }
 
 
                 // Property object
