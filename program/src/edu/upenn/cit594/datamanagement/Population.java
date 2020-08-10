@@ -1,19 +1,19 @@
 package edu.upenn.cit594.datamanagement;
 
 public class Population {
-    private int zip;
-    private int zipPopulation;
+    private String zip;
+    private Integer zipPopulation;
 
-    public Population(int zip, int zipPopulation) {
+    public Population(String zip, int zipPopulation) {
         this.zip = zip;
         this.zipPopulation = zipPopulation;
     }
 
-    public int getZip() {
+    public String getZip() {
         return zip;
     }
 
-    public int getZipPopulation() {
+    public Integer getZipPopulation() {
         return zipPopulation;
     }
 }

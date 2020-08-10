@@ -41,30 +41,30 @@ public class Main {
         logger.logProgramStart(PVInputFileFormat,PVInputFileName,propertyInputFileName,populationInputFileName,logFileName);
 
         // Get user input
-//        Display myDisplay = new Display();
-//        int userOption = myDisplay.getUserInput();
-//        System.out.println("user selected option: " + userOption);
+        Display myDisplay = new Display();
+        int userOption = myDisplay.getUserInput();
+        System.out.println("user selected option: " + userOption);
 
 
         // test reading file
         // PV
-//        PVCSVReader myCSVReader = new  PVCSVReader();
-//        PVJSONReader myJSONReader = new  PVJSONReader();
-//        ArrayList<PV> PVs = myCSVReader.readFromFile(PVInputFileName);
-//        System.out.println(PVInputFileName+ " Content:");
-//
-//        for (PV pv: PVs){
-//            System.out.println(pv.getTimestamp()+" "+pv.getFine()+" "+pv.getDescription()+" " +pv.getAnonymousID()+" "+pv.getState()+" "+pv.getUniqueID()+" "+pv.getZip());
-//        }
+        PVCSVReader myCSVReader = new  PVCSVReader();
+        PVJSONReader myJSONReader = new  PVJSONReader();
+        ArrayList<PV> PVs = myCSVReader.readFromFile(PVInputFileName);
+        System.out.println(PVInputFileName+ " Content:");
+
+        for (PV pv: PVs){
+            System.out.println(pv.getTimestamp()+" "+pv.getFine()+" "+pv.getDescription()+" " +pv.getAnonymousID()+" "+pv.getState()+" "+pv.getUniqueID()+" "+pv.getZip());
+        }
 
         // Property
-//        PropertyReader myPropertyReader = new  PropertyReader();
-//        ArrayList<Property> Properties = myPropertyReader.readFromFile(propertyInputFileName);
-//        System.out.println(propertyInputFileName+ " Content:");
-//
-//        for (Property pp: Properties){
-//            System.out.println(pp.getMarketValue()+" "+pp.getTotLiableArea()+" "+pp.getZip());
-//        }
+        PropertyReader myPropertyReader = new  PropertyReader();
+        ArrayList<Property> Properties = myPropertyReader.readFromFile(propertyInputFileName);
+        System.out.println(propertyInputFileName+ " Content:");
+
+        for (Property pp: Properties){
+            System.out.println(pp.getMarketValue()+" "+pp.getTotLiableArea()+" "+pp.getZip());
+        }
 
         // Population
         PopulationReader myPopulationReader = new  PopulationReader();
