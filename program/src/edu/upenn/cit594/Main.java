@@ -3,6 +3,7 @@ package edu.upenn.cit594;
 
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.FileValidator;
+import edu.upenn.cit594.ui.Display;
 
 public class Main {
     public static void main(String[] args) {
@@ -30,6 +31,10 @@ public class Main {
         FileValidator.nameValidate(populationInputFileName);
         FileValidator.logfileValidate(logFileName);
 
+        // Get user input
+        int userOption = Display.getUserInput();
+
+        // Processing
 
 
 

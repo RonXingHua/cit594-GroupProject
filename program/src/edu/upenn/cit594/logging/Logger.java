@@ -51,7 +51,7 @@ public class Logger {
 
     }
 
-    public void logUserChoice( int userChoice){
+    public void logUserOption( int userChoice){
 
         String currentTime = String.valueOf(System.currentTimeMillis());
         out.println(currentTime + "\\s" + "User Choice:" + userChoice + "\n");

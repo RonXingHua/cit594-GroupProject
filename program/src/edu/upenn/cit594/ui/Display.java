@@ -1,11 +1,13 @@
 package edu.upenn.cit594.ui;
 
+import edu.upenn.cit594.logging.Logger;
+
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
 public class Display {
-    public int getUserInput(){
+    public static int getUserInput(){
         System.out.println("Kindly select an option (0 to 6) to proceed:");
         System.out.println("[0]: Exit");
         System.out.println("[1]: Total population for all ZIP Codes");
@@ -18,6 +20,10 @@ public class Display {
 
         Scanner sc = new Scanner(System.in);
         int option = parseInt(sc.nextLine());
+
+        // logging
+        Logger logger = Logger.getInstance();
+        logger.logUserOption(option);
 
         // input check
         if(option != 0 && option != 1 && option != 2 && option != 3 && option != 4 && option != 5 && option != 6){
