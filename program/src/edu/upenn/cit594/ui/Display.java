@@ -7,7 +7,7 @@ import java.util.Scanner;
 import static java.lang.Integer.parseInt;
 
 public class Display {
-    public int getUserInput(){
+    public int getUserOption(){
         System.out.println("Kindly select an option (0 to 6) to proceed:");
         System.out.println("[0]: Exit");
         System.out.println("[1]: Total population for all ZIP Codes");
@@ -33,6 +33,19 @@ public class Display {
 
         return option;
 
+    }
+
+    public int getUserZip(){
+        System.out.println("Kindly input a ZIP code : ");
+
+        Scanner sc = new Scanner(System.in);
+        int zip = parseInt(sc.nextLine());
+
+        // logging
+        Logger logger = Logger.getInstance();
+        logger.logUserZip(zip);
+
+        return zip;
     }
 
     public void displayInfo(String displayingContent){

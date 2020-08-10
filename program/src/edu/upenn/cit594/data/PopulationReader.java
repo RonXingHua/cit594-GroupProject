@@ -38,8 +38,8 @@ public class PopulationReader <E> implements Reader {
                 String rawPopulation_split[] = rawPopulation.split("\\s");
 
                 // Parse all fields for Population
-                int zip = parseInt(rawPopulation_split[0]);
-                int zipPopulation = parseInt(rawPopulation_split[1]);
+                Integer zip = parseInt(rawPopulation_split[0]);
+                Integer zipPopulation = parseInt(rawPopulation_split[1]);
 
 
                 // Population object

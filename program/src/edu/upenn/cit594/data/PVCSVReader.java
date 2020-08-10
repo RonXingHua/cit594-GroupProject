@@ -55,7 +55,7 @@ public class PVCSVReader <E> implements Reader {
                     continue;
                 }
 
-                String PVZip = rawPV_split[6];
+                Integer PVZip = parseInt(rawPV_split[6]);
 
                 // PV object
                 PV myPV = new PV(PVDateTime,PVFine, PVDescription,PVAnonymousID,PVState,PVUniqueID,PVZip);

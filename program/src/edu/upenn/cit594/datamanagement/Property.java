@@ -3,9 +3,9 @@ package edu.upenn.cit594.datamanagement;
 public class Property {
     private Double marketValue;
     private Double totLiableArea;
-    private String zip;
+    private Integer zip;
 
-    public Property(Double marketValue, Double totLiableArea, String zip) {
+    public Property(Double marketValue, Double totLiableArea, Integer zip) {
         // null pointer check - 1
         if(marketValue == null){
             this.marketValue = null;
@@ -31,7 +31,7 @@ public class Property {
         return totLiableArea;
     }
 
-    public String getZip() {
+    public Integer getZip() {
         return zip;
     }
 }

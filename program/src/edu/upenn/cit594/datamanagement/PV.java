@@ -10,9 +10,9 @@ public class PV {
     private String anonymousID;
     private String state;
     private String uniqueID;
-    private String zip;
+    private Integer zip;
 
-    public PV(LocalDateTime timestamp,Integer fine, String description, String anonymousID, String state, String uniqueID, String zip){
+    public PV(LocalDateTime timestamp,Integer fine, String description, String anonymousID, String state, String uniqueID, Integer zip){
         this.timestamp = timestamp;
         this.fine = fine;
         this.description = description;
@@ -46,7 +46,7 @@ public class PV {
         return uniqueID;
     }
 
-    public String getZip() {
+    public Integer getZip() {
         return zip;
     }
 }

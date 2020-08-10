@@ -18,7 +18,7 @@ import static java.lang.Integer.parseInt;
 
 public class PVJSONReader <E> implements Reader{
     @Override
-    public ArrayList readFromFile(String PVInputFileName) {
+    public ArrayList<PV> readFromFile(String PVInputFileName) {
         Logger logger = Logger.getInstance();
 
         ArrayList<PV> parkingViolations = new ArrayList<PV>();
@@ -52,7 +52,7 @@ public class PVJSONReader <E> implements Reader{
             DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss'Z'");
             LocalDateTime PVDateTime = LocalDateTime.parse(rawDatetime, formatter);
 
-            int PVFine = parseInt(jsonData.get("fine").toString());
+            Integer PVFine = parseInt(jsonData.get("fine").toString());
             String PVDescription = jsonData.get("violation").toString();
             String PVAnonymousID = jsonData.get("plate_id").toString();
             String PVState = jsonData.get("state").toString();
@@ -62,7 +62,7 @@ public class PVJSONReader <E> implements Reader{
             if(jsonData.get("zip_code").toString().isEmpty()){
                 continue;
             }
-            String PVZip = jsonData.get("zip_code").toString();
+            Integer PVZip = parseInt(jsonData.get("zip_code").toString());
 
 
             // PV object

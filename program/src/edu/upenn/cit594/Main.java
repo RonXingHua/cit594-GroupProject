@@ -42,7 +42,7 @@ public class Main {
 
         // Get user input
         Display myDisplay = new Display();
-        int userOption = myDisplay.getUserInput();
+        int userOption = myDisplay.getUserOption();
         System.out.println("user selected option: " + userOption);
 
 

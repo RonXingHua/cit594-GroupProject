@@ -76,9 +76,9 @@ public class PropertyReader <E> implements Reader {
                 }
 
                 //only consider the first five digits of zip
-                String propertyZip;
+                Integer propertyZip;
                 try{
-                    propertyZip = rawProperty_split[indexZip].substring(0,4);
+                    propertyZip = parseInt(rawProperty_split[indexZip].substring(0,4));
                 }catch (Exception e) {
                     continue;
                 }
