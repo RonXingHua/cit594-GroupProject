@@ -35,7 +35,7 @@ public class Display {
 
     }
 
-    public int getUserZip(){
+    public Integer getUserZip(){
         System.out.println("Kindly input a ZIP code : ");
 
         Scanner sc = new Scanner(System.in);
