@@ -1,7 +1,0 @@
-package edu.upenn.cit594.data;
-
-import java.util.ArrayList;
-
-public interface Reader<E>{
-    public ArrayList<E> readFromFile(String fileName);
-}

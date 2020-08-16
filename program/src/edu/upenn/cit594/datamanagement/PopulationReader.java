@@ -1,21 +1,32 @@
-package edu.upenn.cit594.data;
+package edu.upenn.cit594.datamanagement;
 
-import edu.upenn.cit594.datamanagement.Population;
+
+import edu.upenn.cit594.data.Population;
 import edu.upenn.cit594.logging.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
-public class PopulationReader <E> implements Reader {
-    @Override
-    public ArrayList<Population> readFromFile(String populationInputFileName) {
-        Logger logger = Logger.getInstance();
-        ArrayList<Population> populations = new ArrayList<Population>();
-        File populationInputFile = new File(populationInputFileName);
+public class PopulationReader {
+	
+	protected String filename;
+	protected Logger logger;
+	
+	public PopulationReader(String filename, Logger logger) {
+		this.filename = filename;
+		this.logger = logger;
+	}
+	
+	
+    public List<Population> getAllPopulation() {
+    	
+        List<Population> populations = new ArrayList<Population>();
+        File populationInputFile = new File(filename);
 
         Scanner myScanner = null;
         try{
@@ -25,7 +36,7 @@ public class PopulationReader <E> implements Reader {
         }
 
         //logging
-        logger.logFileOpen(populationInputFileName);
+        logger.logFileOpen(filename);
 
         if(myScanner != null) {
             while (myScanner.hasNextLine()) {

@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileValidator {
-    // Check if the tweet file format is json or text
+    // Check if the tweet file format is json or csv
     public static void formatValidate(String PVFileFormat){
         if ((!PVFileFormat.equals("json")) && (!PVFileFormat.equals("csv"))){
             System.out.println("Error: The Parking Violations input file format only accept either json or csv, please check, exiting.");

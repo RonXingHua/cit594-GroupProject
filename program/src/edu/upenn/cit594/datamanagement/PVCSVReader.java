@@ -1,6 +1,6 @@
-package edu.upenn.cit594.data;
+package edu.upenn.cit594.datamanagement;
 
-import edu.upenn.cit594.datamanagement.PV;
+import edu.upenn.cit594.data.PV;
 import edu.upenn.cit594.logging.Logger;
 
 import java.io.File;
@@ -8,27 +8,37 @@ import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
-public class PVCSVReader <E> implements Reader {
-    @Override
-    public ArrayList<PV> readFromFile(String PVInputFileName) {
-        Logger logger = Logger.getInstance();
-        ArrayList<PV> parkingViolations = new ArrayList<PV>();
-        File PVInputFile = new File(PVInputFileName);
 
+public class PVCSVReader implements Reader {
+
+    protected String filename;
+    protected Logger logger;
+    
+    public PVCSVReader(String filename, Logger logger) {
+    	this.filename = filename;
+    	this.logger = logger;
+    }
+    
+    public List<PV> getAllPVs() {  	
+        List<PV> parkingViolations = new ArrayList<PV>();
+        
         Scanner myScanner = null;
 
         try {
+        	File PVInputFile = new File(filename);  	
             myScanner = new Scanner(PVInputFile);
+            
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
         //logging
-        logger.logFileOpen(PVInputFileName);
+        logger.logFileOpen(filename);
 
         if(myScanner != null) {
             while (myScanner.hasNextLine()) {

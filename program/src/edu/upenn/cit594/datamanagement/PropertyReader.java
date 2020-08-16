@@ -1,7 +1,6 @@
-package edu.upenn.cit594.data;
+package edu.upenn.cit594.datamanagement;
 
-
-import edu.upenn.cit594.datamanagement.Property;
+import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.logging.Logger;
 
 import java.io.File;
@@ -11,12 +10,20 @@ import java.util.*;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
-public class PropertyReader <E> implements Reader {
-    @Override
-    public ArrayList<Property> readFromFile(String propertyInputFileName) {
-        Logger logger = Logger.getInstance();
-        ArrayList<Property> properties = new ArrayList<Property>();
-        File propertyInputFile = new File(propertyInputFileName);
+public class PropertyReader {
+	
+	protected String filename;
+	protected Logger logger;
+	
+	public PropertyReader(String filename, Logger logger) {
+		this.filename = filename;
+		this.logger = logger;
+	}
+
+    public List<Property> getAllProperties() {
+    	
+        List<Property> properties = new ArrayList<Property>();
+        File propertyInputFile = new File(filename);
 
         Scanner myScanner = null;
         try{
@@ -26,7 +33,7 @@ public class PropertyReader <E> implements Reader {
         }
 
         //logging
-        logger.logFileOpen(propertyInputFileName);
+        logger.logFileOpen(filename);
 
         if(myScanner != null) {
             // Determine fields in the first row
@@ -43,7 +50,7 @@ public class PropertyReader <E> implements Reader {
             }
 
             int indexMarketValue = fields.indexOf("market_value");
-            int indexTotLiableArea = fields.indexOf("total_livable_area");
+            int indexTotLivableArea = fields.indexOf("total_livable_area");
             int indexZip = fields.indexOf("zip_code");
 
             while (myScanner.hasNextLine()) {
@@ -57,7 +64,7 @@ public class PropertyReader <E> implements Reader {
 
                 // Parse all fields for Property
 
-                Double propertyMarketValue,propertyTotLiableArea;
+                Double propertyMarketValue,propertyTotLivableArea;
                 // Whenever parse to Double encounter error, make it a null value
                 try{
                     propertyMarketValue = parseDouble(rawProperty_split[indexMarketValue]);
@@ -65,9 +72,9 @@ public class PropertyReader <E> implements Reader {
                     propertyMarketValue = null;
                 }
                 try{
-                    propertyTotLiableArea = parseDouble(rawProperty_split[indexMarketValue]);
+                    propertyTotLivableArea = parseDouble(rawProperty_split[indexTotLivableArea]);
                 }catch (Exception e) {
-                    propertyTotLiableArea = null;
+                    propertyTotLivableArea = null;
                 }
 
                 // ignore the entry with empty zip code
@@ -78,14 +85,14 @@ public class PropertyReader <E> implements Reader {
                 //only consider the first five digits of zip
                 Integer propertyZip;
                 try{
-                    propertyZip = parseInt(rawProperty_split[indexZip].substring(0,4));
+                    propertyZip = parseInt(rawProperty_split[indexZip].substring(0,5));
                 }catch (Exception e) {
                     continue;
                 }
 
 
                 // Property object
-                Property myProperty = new Property(propertyMarketValue, propertyTotLiableArea, propertyZip);
+                Property myProperty = new Property(propertyMarketValue, propertyTotLivableArea, propertyZip);
 
                 // Add Property info into List
                 properties.add(myProperty);

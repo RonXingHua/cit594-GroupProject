@@ -1,4 +1,4 @@
-package edu.upenn.cit594.datamanagement;
+package edu.upenn.cit594.data;
 
 public class Population {
     private Integer zip;

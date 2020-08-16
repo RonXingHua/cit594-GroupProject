@@ -1,7 +1,7 @@
 package edu.upenn.cit594.logging;
 
 import java.io.File;
-import java.io.FileWriter;
+
 import java.io.PrintWriter;
 
 public class Logger {

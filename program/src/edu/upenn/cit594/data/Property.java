@@ -1,11 +1,11 @@
-package edu.upenn.cit594.datamanagement;
+package edu.upenn.cit594.data;
 
 public class Property {
     private Double marketValue;
-    private Double totLiableArea;
+    private Double totalLivableArea;
     private Integer zip;
 
-    public Property(Double marketValue, Double totLiableArea, Integer zip) {
+    public Property(Double marketValue, Double totalLivableArea, Integer zip) {
         // null pointer check - 1
         if(marketValue == null){
             this.marketValue = null;
@@ -14,10 +14,10 @@ public class Property {
         }
 
         // null pointer check - 2
-        if(totLiableArea == null){
-            this.totLiableArea = null;
+        if(totalLivableArea == null){
+            this.totalLivableArea = null;
         }else{
-            this.totLiableArea = totLiableArea;
+            this.totalLivableArea = totalLivableArea;
         }
 
         this.zip = zip;
@@ -27,8 +27,8 @@ public class Property {
         return marketValue;
     }
 
-    public Double getTotLiableArea() {
-        return totLiableArea;
+    public Double getTotLivableArea() {
+        return totalLivableArea;
     }
 
     public Integer getZip() {
