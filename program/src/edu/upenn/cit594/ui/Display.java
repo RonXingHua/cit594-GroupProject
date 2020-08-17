@@ -1,6 +1,5 @@
 package edu.upenn.cit594.ui;
 
-import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.PVProcessor;
 import edu.upenn.cit594.processor.PopulationProcessor;
@@ -36,6 +35,7 @@ public class Display {
 		this.logger = logger;
 	}
 
+	// Using supplier to initialize different processors
 	public PropertyProcessor getPropertyProcessor() {
 		if(propertyProcessor == null) {
 			propertyProcessor = propertyProcessorSupplier.get();

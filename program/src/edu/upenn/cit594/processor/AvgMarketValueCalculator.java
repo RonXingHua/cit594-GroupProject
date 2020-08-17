@@ -11,15 +11,7 @@ public class AvgMarketValueCalculator implements AvgCalculator {
 		Double ttlMarketValue = 0.00;
 		int count = 0;
 		
-		
-//		for(Property p: properties) {
-//			Double marketValue = p.getMarketValue();
-//			if(p.getZip().equals(zip) && marketValue != null) {
-//				ttlMarketValue += marketValue;
-//				count++;
-//			}			
-//		}
-		
+
 		List<Property> properties = propertyByZip.get(zip);
 		if (properties == null) return 0.00;
 		for(Property p: properties) {

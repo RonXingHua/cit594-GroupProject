@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.PrintWriter;
 
 public class Logger {
+
     // Using Singleton
     private PrintWriter out;
 
