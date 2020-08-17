@@ -1,7 +1,11 @@
 package edu.upenn.cit594.ui;
 
+import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.logging.Logger;
-import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.processor.PVProcessor;
+import edu.upenn.cit594.processor.PopulationProcessor;
+import edu.upenn.cit594.processor.PropertyProcessor;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,17 +13,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Supplier;
 
 
 public class Display {
 	
-	protected Processor processor;
+	private PropertyProcessor propertyProcessor;
+	protected PopulationProcessor populationProcessor;
+	private PVProcessor pvProcessor;
+
+	protected Supplier<PropertyProcessor> propertyProcessorSupplier;
+	protected Supplier<PopulationProcessor> populationProcessorSupplier;
+	protected Supplier<PVProcessor> pvProcessorSupplier;
+
 	protected Logger logger;
 	protected Scanner in;
 	
-	public Display(Processor processor, Logger logger) {
-		this.processor = processor;
+	public Display(Supplier<PropertyProcessor> propertyProcessorSupplier, Supplier<PopulationProcessor> populationProcessorSupplier, Supplier<PVProcessor> pvProcessorSupplier, Logger logger) {
+		this.propertyProcessorSupplier = propertyProcessorSupplier;
+		this.populationProcessorSupplier = populationProcessorSupplier;
+		this.pvProcessorSupplier = pvProcessorSupplier;
 		this.logger = logger;
+	}
+
+	public PropertyProcessor getPropertyProcessor() {
+		if(propertyProcessor == null) {
+			propertyProcessor = propertyProcessorSupplier.get();
+		}
+
+		return propertyProcessor;
+	}
+
+	public PopulationProcessor getPopulationProcessor() {
+		if(populationProcessor == null) {
+			populationProcessor = populationProcessorSupplier.get();
+		}
+
+		return populationProcessor;
+	}
+
+	public PVProcessor getPVProcessor() {
+		if(pvProcessor == null) {
+			pvProcessor = pvProcessorSupplier.get();
+		}
+
+		return pvProcessor;
 	}
 	
 	
@@ -70,7 +108,7 @@ public class Display {
 	
 	//helper method to ask user input a zip code for #3,4,5 
 	protected Integer getUserZip(){
-        System.out.println("Kindly input a ZIP code : ");
+        System.out.print("Kindly input a ZIP code : ");
         
         in = new Scanner(System.in);  //should not close in for this method, otherwise will throw exception
         Integer zip = in.nextInt();  
@@ -82,7 +120,7 @@ public class Display {
 	
 	//#1
 	protected void doTtlPopulation() {  
-		Integer ttlPopulation = processor.getTtlPopulation();
+		Integer ttlPopulation = getPopulationProcessor().getTtlPopulation();
 		System.out.println(ttlPopulation.toString());
 		
 		start();
@@ -91,7 +129,7 @@ public class Display {
 	
 	//#2
 	protected void doTtlFinesPerCapitaForZip() {   
-		Map<Integer, String> ttlFinesPerCapitaForZip = processor.getTtlFinesPerCapitaForZip();	
+		Map<Integer, String> ttlFinesPerCapitaForZip = getPVProcessor().getTtlFinesPerCapitaForZip();
 		List<Integer> zips = new ArrayList<>();
 		
 		//generate ArrayList of sorted zip
@@ -114,7 +152,7 @@ public class Display {
 	//#3
 	protected void doAvgMarketValueForZip() {
 		Integer zip = getUserZip();  //ask user to input a zip
-		Integer result = processor.getAvgMarketValueForZip(zip);
+		Integer result = getPropertyProcessor().getAvgMarketValueForZip(zip);
 		System.out.println(result.toString());
 	    
 		start();
@@ -123,7 +161,7 @@ public class Display {
 	//#4
 	protected void doAvgLivableAreaForZip() {
 		Integer zip = getUserZip();
-		Integer result = processor.getAvgLivableAreaForZip(zip);
+		Integer result = getPropertyProcessor().getAvgLivableAreaForZip(zip);
 		System.out.println(result.toString());
 		
 		start();
@@ -132,7 +170,7 @@ public class Display {
 	//#5
 	protected void doTtlMarketValuePerCapitaForZip() {
 		Integer zip = getUserZip();
-		Integer result = processor.getTtlMarketValuePerCapitaForZip(zip);
+		Integer result = getPropertyProcessor().getTtlMarketValuePerCapitaForZip(zip);
 	    System.out.println(result.toString());
 	    
 		start();
@@ -140,7 +178,7 @@ public class Display {
 	
 	//#6
 	protected void doTtlMarketValuePerCapitaForMostMeterExpZip() {
-		Integer result = processor.getTtlMarketValuePerCapitaForMostMeterExpZip();
+		Integer result = getPropertyProcessor().getTtlMarketValuePerCapitaForMostMeterExpZip();
 		System.out.println(result.toString());
 	
 	    start();

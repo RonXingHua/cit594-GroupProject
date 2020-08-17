@@ -1,7 +1,6 @@
 package edu.upenn.cit594.processor;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,31 +13,24 @@ import edu.upenn.cit594.datamanagement.PropertyReader;
 import edu.upenn.cit594.datamanagement.Reader;
 import edu.upenn.cit594.logging.Logger;
 
-public class Processor {
-	
-	protected Reader reader;
-	protected PropertyReader propertyReader;
-	protected PopulationReader populationReader;
+public class PropertyProcessor {
+
 	protected Logger logger;
 	protected MemoizationAlgorithm memoization;
+	protected Map<Integer, List<Property>> propertyByZip;
+	protected Map<Integer, List<PV>> PVByZip;
 	
-	protected List<PV> PVs;
-	protected List<Property> properties;
-	protected List<Population> populations;
-
-	
-	public Processor(Reader reader, PropertyReader propertyReader, 
+	public PropertyProcessor(Reader reader, PropertyReader propertyReader,
 			PopulationReader populationReader, Logger logger, MemoizationAlgorithm memoization) {
-		this.reader = reader;
-		this.propertyReader = propertyReader;
-		this.populationReader = populationReader;
+
 		this.logger = logger;
 		this.memoization = memoization;
-		
-		PVs = reader.getAllPVs();
-		properties = propertyReader.getAllProperties();
-		populations = populationReader.getAllPopulation();
-		
+
+		// both property data and PV data are pre-processed so that only in the very first time the program is going to a bit longer to compute.
+		// in the following tries, the result will be displayed instantaneously.
+		propertyByZip = memoization.getPropertyByZip();
+		PVByZip = memoization.getPVByZip();
+
 	}
 	
 	//helper method for #2: truncate a Double value to four decimal
@@ -56,82 +48,9 @@ public class Processor {
 	}
 	
 
-	
-	
-	//#1
-	public Integer getTtlPopulation() {  
-		Integer ttlPopulation = 0;
-		for(Population p: populations) {
-			ttlPopulation += p.getZipPopulation();
-		}
-		return ttlPopulation;
-	}
-	
-	
-	//#2 
-	public Map<Integer, String> getTtlFinesPerCapitaForZip() {   
-		Map<Integer, String> ttlFinesPerCapitaForZip = new HashMap<>();
-		
-		Map<Integer, List<PV>> PVByZip = memoization.getPVByZip();		
-		for (Map.Entry<Integer, List<PV>> entry: PVByZip.entrySet()) { 		
-			Integer zip = entry.getKey();
-			Double ttlFines = 0.0000;
-			Integer zipPopulation = null;
-			
-			for(Population p: populations) {
-				if(!p.getZip().equals(zip)) continue;  //if this zip is not in the population, skip
-				
-				zipPopulation = p.getZipPopulation();
-				if(zipPopulation.equals(0)) break; //if the zip has 0 population, loop for next zip
-				
-				List<PV> PVs = entry.getValue();											
-				for(PV pv: PVs) {
-					if(pv.getFine() == (int) pv.getFine() && pv.getFine() != null 
-							&& pv.getState().equals("PA")) {  
-						ttlFines += pv.getFine();
-					}
-				}
-				if(ttlFines == 0) break;  //if total fine for this zip is 0, loop for next zip
-				String ttlFinesPerCapita = truncateFourDigit(ttlFines/zipPopulation);	
-				ttlFinesPerCapitaForZip.put(zip, ttlFinesPerCapita);
-				break;  //no need to loop for remaining populations
-			}		
-		}
-			
-		return ttlFinesPerCapitaForZip;		
-	}
-	
-	
-	//old #2 (not apply memoization)
-//	public Map<Integer, String> getTtlFinesPerCapitaForZip() {   
-//		Map<Integer, String> ttlFinesPerCapitaForZip = new HashMap<>();
-//	
-//		for(Population p: populations) {
-//			Integer zip = p.getZip();
-//			Integer zipPopulation = p.getZipPopulation();
-//			if(zipPopulation.equals(0) || zipPopulation == null) continue; 
-//			
-//			Double ttlFines = 0.0000;
-//			for(PV pv: PVs) {
-//				if(pv.getFine() == (int) pv.getFine() && pv.getFine() != null 
-//						&& pv.getZip().equals(zip) && pv.getState().equals("PA")) {  
-//					ttlFines += pv.getFine();	
-//				}
-//				else continue;			
-//			}
-//			if(ttlFines == 0) continue; 
-//			
-//			String ttlFinesPerCapita = truncateFourDigit(ttlFines/zipPopulation);	
-//			ttlFinesPerCapitaForZip.put(zip, ttlFinesPerCapita);			
-//		}
-//		
-//		return ttlFinesPerCapitaForZip;		
-//	}
-	
-	
 	//#3+4
 	public Double getAvgForZip(Integer zip, AvgCalculator avgCalculator) {
-		return avgCalculator.calculate(memoization.getPropertyByZip(), zip);
+		return avgCalculator.calculate(propertyByZip, zip);
 	}
 	
 	//#3
@@ -146,7 +65,8 @@ public class Processor {
 	
 	//#5
 	public Integer getTtlMarketValuePerCapitaForZip(Integer zip) {
-		Map<Integer, List<Property>> propertyByZip = memoization.getPropertyByZip();
+
+		List<Population> populations = PopulationProcessor.populationReader.getAllPopulation();
 		List<Property> properties = propertyByZip.get(zip);
 		if(properties == null) return 0;
 		
@@ -173,7 +93,7 @@ public class Processor {
 	
 	//#6
 	public Integer getTtlMarketValuePerCapitaForMostMeterExpZip() {
-		Map<Integer, List<PV>> PVByZip = memoization.getPVByZip();
+
 		Map<Integer, Integer> meterExpByZip = new HashMap<>();
 		
 		for (Map.Entry<Integer, List<PV>> entry: PVByZip.entrySet()) {

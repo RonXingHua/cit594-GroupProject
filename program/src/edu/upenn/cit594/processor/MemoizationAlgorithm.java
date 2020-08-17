@@ -27,11 +27,14 @@ public class MemoizationAlgorithm {
 	public MemoizationAlgorithm(Reader reader, PropertyReader propertyReader) {
 		this.reader = reader;
 		this.propertyReader = propertyReader;
-		PVs = reader.getAllPVs();
-		properties = propertyReader.getAllProperties();
-		
+
+	}
 	
+	
+	public Map<Integer, List<PV>> getPVByZip(){
+		PVs = reader.getAllPVs();
 		PVByZip = new HashMap<>();
+
 		for(PV pv: PVs) {
 			Integer zip = pv.getZip();
 			if(zip == null) continue;
@@ -44,8 +47,14 @@ public class MemoizationAlgorithm {
 				PVByZip.put(zip, l);
 			}
 		}
-			
+		return PVByZip;
+	}
+	
+	
+	public Map<Integer, List<Property>> getPropertyByZip(){
+		properties = propertyReader.getAllProperties();
 		propertyByZip = new HashMap<>();
+
 		for(Property p: properties) {
 			Integer zip = p.getZip();
 			if(zip == null) continue;
@@ -58,16 +67,6 @@ public class MemoizationAlgorithm {
 				propertyByZip.put(zip,l);
 			}
 		}
-		
-	}
-	
-	
-	public Map<Integer, List<PV>> getPVByZip(){
-		return PVByZip;
-	}
-	
-	
-	public Map<Integer, List<Property>> getPropertyByZip(){
 		return propertyByZip;
 	}
 	

@@ -6,10 +6,10 @@ import edu.upenn.cit594.datamanagement.PropertyReader;
 import edu.upenn.cit594.datamanagement.PVCSVReader;
 import edu.upenn.cit594.datamanagement.Reader;
 import edu.upenn.cit594.logging.Logger;
-import edu.upenn.cit594.processor.FileValidator;
-import edu.upenn.cit594.processor.MemoizationAlgorithm;
-import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.processor.*;
 import edu.upenn.cit594.ui.Display;
+
+import java.util.function.Supplier;
 
 
 public class Main {
@@ -21,7 +21,7 @@ public class Main {
             System.out.println("Error: The program requires exactly 5 arguments, please check, exiting.");
             System.exit(1);
         }      
-        String PVInputFileFormat = args[0];
+        String PVInputFileFormat = args[0].toLowerCase();
         String PVInputFileName = args[1];
         String propertyInputFileName = args[2];
         String populationInputFileName = args[3];
@@ -29,16 +29,16 @@ public class Main {
         
         
         // logging and validate input files
-        Logger logger = Logger.getInstance(logFileName);
-        logger.logProgramStart(PVInputFileFormat,PVInputFileName,propertyInputFileName,
-        		populationInputFileName,logFileName);
 
         FileValidator.formatValidate(PVInputFileFormat);
         FileValidator.inputFileValidate(PVInputFileName);
         FileValidator.inputFileValidate(propertyInputFileName);
         FileValidator.inputFileValidate(populationInputFileName);
         FileValidator.logfileValidate(logFileName);
-           
+
+        Logger logger = Logger.getInstance(logFileName);
+        logger.logProgramStart(PVInputFileFormat,PVInputFileName,propertyInputFileName,
+                populationInputFileName,logFileName);
         
         //build instances
         Reader reader = null;		
@@ -50,9 +50,14 @@ public class Main {
 		}			
 		PropertyReader propertyReader = new PropertyReader(propertyInputFileName, logger);		
 		PopulationReader populationReader = new PopulationReader(populationInputFileName, logger);		
-		MemoizationAlgorithm memoization = new MemoizationAlgorithm(reader, propertyReader);		
-		Processor processor = new Processor(reader, propertyReader, populationReader, logger, memoization);		
-		Display display = new Display(processor, logger);
+		MemoizationAlgorithm memoization = new MemoizationAlgorithm(reader, propertyReader);
+
+        Reader finalReader = reader;
+        Display display = new Display(
+                () -> new PropertyProcessor(finalReader, propertyReader, populationReader, logger, memoization),
+                () -> new PopulationProcessor(populationReader),
+                () -> new PVProcessor(finalReader),
+                logger);
 	
 		//run
 		display.start();
